@@ -14,6 +14,7 @@ typedef struct  tetramino_s
     __uint128_t         map;
     struct tetramino_s  *next;
     int                 width;
+    char                letter;
 }               tetramino;
 
 typedef struct  matrix_neg_s
@@ -34,5 +35,6 @@ int             val_chk(char *pos_f);
 int             sym_chk(char *line);
 tetramino       *fig_to_tet(char *pos_fig, int fig_counter);
 int             print_error(int p);
+tetramino		*get_tetramino(int fd, char letter);
 
 #endif //UNTITLED_FILLIT_START_H
