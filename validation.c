@@ -1,86 +1,94 @@
-#include <stdio.h>
 #include "fillit_start.h"
 
-tetramino   *fig_to_tet(char *pos_f, int map_size)
+static __uint128_t     move_to_top(__uint128_t map)
 {
-    int         i; 
-    int         w; 
-    tetramino   *tet; 
+    __uint128_t         left_board;
 
-    i = 1;
-    w = 0;
-    tet->map = 0; 
-    while (pos_f) 
-    {
-        w = (*pos_f == '#') ? w + 1 : w;
-        tet->map = (*pos_f == '#') ? tet->map + 1 : tet->map; 
-        tet->map <<= 1; 
-        if (++i == 4) 
-        {
-            tet->map <<= map_size;
-            i = 1; 
-            tet->width = (tet->width < w) ? w : tet->width;
-            w = 0;
-        }
-    }
-    tet->next = NULL;
-    return (tet);
+    left_board = 0x8888;
+    map <<= 112;
+    while (!(map >> 124))
+        map <<= 4;
+    while (((left_board << 112) & map) == 0)
+        map <<= 1;
+    return (map);
 }
 
-/*static char     **save_fig_to_array(int fd)
+static __uint128_t		validation(__uint128_t	map)
 {
-    char *line;
-    int i;
-    char *figs[26]
+	int			connect;
+	int			n_hash;
+	int			i;
 
-    i = 0;
-    *figs = (char*)malloc(sizeof(char));
-    while (get_next_line(fd, &line)) 
-    {
-        i++;
-        if ((ft_strlen(line) != 4) || (!sym_chk(line))) 
-            print_error(2);
-        if (((i % 5 == 0) && (!ft_strcmp(line,"/n"))) || (i / 5 >= 25)) 
-            print_error(2);
-        figs[(i - 1) / 5] = ft_strcat(figs[ (i - 1) / 5], line); 
-    }
-    return (&figs);
-}*/
+	connect = 0;
+	n_hash = 0;
+	i = 0;
+	while (i < 16)
+	{
+		if ((map << (112 + i)) >> 127)
+		{
+			n_hash++;
+			if (i / 4 == (i - 1) / 4)
+				connect += map << (i + 111) >> 127;
+			if (i / 4 == (i + 1) / 4)
+				connect += map << (i + 113) >> 127;
+			connect += map << (i + 108) >> 127;
+			connect += map << (i + 116) >> 127;
+		}
+		i++;
+	}
+	if (n_hash != 4 || (connect != 6 && connect != 8))
+		return (0);
+	map = move_to_top(map);
+	return (map);
+}
 
-int figure_validation(int ac, char **av)
+static __uint128_t		str_to_nbr(int fd)
 {
-    tetramino   *fig;
-    matrix_neg  matrix;
-    int         map_size;
-    int         i;
-    int         fd;
-    char        *fd_fig;
-    char        *line;
-    char        **figs[26];
-    int         fig_counter;
+	__uint128_t	map;
+	char		byte;
+	int			i;
 
-    if (ac != 1)
-        return (print_error(1));
-    i = 0;
-    if ((fd = open(av[1], O_RDONLY)) >= 3) 
-        while (get_next_line(fd, &line)) 
-        {
-            i++;
-            if ((ft_strlen(line) != 4) || (!sym_chk(line))) 
-                return (print_error(2));
-            if (((i % 5 == 0) && (!ft_strcmp(line,"/n"))) || (i / 5 >= 25)) 
-                return (print_error(2));
-            *figs[(i - 1) / 5] = ft_strcat(*figs[ (i - 1) / 5], line); 
-        }
-    fig_counter = (i - 1) / 5 + 1; 
-    map_size = fig_counter; 
-    while (fig_counter != 0)
-    {
-        if (val_chk(*figs[fig_counter])) 
-            fig = fig_to_tet(*figs[fig_counter], map_size); 
-        else
-            return (print_error(2));
-        fig_counter--; 
-    }
-    return (0);
+	map = 0;
+	i = 0;
+	while (i++ < 20)
+	{
+		if (!(read(fd, &byte, 1)))
+			return (0);
+		if (i % 5)
+		{
+			if (byte != '.' && byte != '#')
+				return (0);
+			map <<= 1;
+			if (byte == '#')
+				map++;
+		}
+		else if (byte != '\n')
+			return (0);
+	}
+	return (validation(map));
+}
+
+tetramino		*get_tetramino(int fd, char letter)
+{
+	tetramino	*figure;
+	char		tab;
+
+	if (!(figure = (tetramino*)malloc(sizeof(tetramino)))
+		|| letter > 'Z')
+		return (NULL);
+	if (!(figure->map = str_to_nbr(fd)))
+	{
+		free(figure);
+		figure = NULL;
+		return (NULL);
+	}
+	figure->map = 4;
+	figure->letter = letter;
+	if (read(fd, &tab, 1))
+		if (tab != '\n' || !(figure->next = get_tetramino(fd, letter + 1)))
+		{
+			free(figure);
+			figure = NULL;
+		}
+	return (figure);
 }
