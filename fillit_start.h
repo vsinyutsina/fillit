@@ -7,12 +7,14 @@
 # include "libft/libft.h"
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 typedef struct  		tetramino_s
 {
 	__uint128_t			map;
 	struct tetramino_s	*next;
 	int					width;
+	int					size;
 	char				letter;
 }						tetramino;
 
@@ -26,5 +28,7 @@ typedef struct			matrix_neg_s
 
 int						print_error(int p);
 tetramino				*get_tetramino(int fd, char letter);
+
+void					print_uint(__uint128_t line, int size, char l);
 
 #endif
