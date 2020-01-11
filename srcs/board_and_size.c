@@ -4,30 +4,32 @@
 
 #include "../includes/fillit.h"
 
-void	resize(tetramino *figure, int new_size)
+void	resize(tetramino *fig, int new_size)
 {
 	int			i;
+	int			delta;
 	__uint128_t	mask;
 
-	if (!figure)
+	if (!fig)
 		return ;
-	resize(figure->next, new_size);
-	figure->map = figure->map_begin;
+	fig->map = fig->map_begin;
+	delta = ABS(fig->map_size - new_size);
+	mask = -1;
 	i = 0;
-	if (new_size > figure->map_size)
+	mask >>= fig->map_size * (new_size < fig->map_size ? 3 : 1);
+	while (i++ < 3)
 	{
-		mask = -1;
-		mask >>= figure->map_size;
-		while (i < 3)
-		{
-//			figure->map = ()
-//			print_fig(figure->map, 4, '$');
-			mask >>= new_size;
-			i++;
-		}
-		figure->map_begin = figure->map;
-		figure->map_size = new_size;
+		if (new_size < fig->map_size)
+			fig->map = ((fig->map & mask) << delta)
+					| (fig->map & ~((mask <<= delta)));
+		else
+			fig->map = (fig->map & ~mask)
+					| ((fig->map & mask) >> (delta));
+		mask = new_size < fig->map_size ? mask << new_size : mask >> new_size;
 	}
+	fig->map_begin = fig->map;
+	fig->map_size = new_size;
+	resize(fig->next, new_size);
 }
 
 int		get_map_size(tetramino *figure)

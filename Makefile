@@ -7,7 +7,7 @@ CC_FLAGS = -Wall -Wextra -Werror
 SRC_NAME = main.c	\
 	validation.c	\
 	print.c			\
-	board.c
+	board_and_size.c
 SRC_PATH = ./srcs/
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 

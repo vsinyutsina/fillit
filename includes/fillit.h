@@ -10,6 +10,8 @@
 
 # include <stdio.h> // DELETE
 
+# define ABS(x) ((x) < 0 ? -(x) : (x))
+
 typedef struct  		tetramino_s
 {
 	__uint128_t			map;

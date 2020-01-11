@@ -26,7 +26,15 @@ int		solve(int fd)
 			tmp = tmp->next;
 		}
 		tmp = fig;
-		resize(tmp, 5);
+		resize(tmp, 6);
+		while (tmp)
+		{
+			print_fig(tmp->map, tmp->map_size, tmp->letter);
+			print_fig_param(tmp);
+			tmp = tmp->next;
+		}
+		tmp = fig;
+		resize(tmp, 3);
 		while (tmp)
 		{
 			print_fig(tmp->map, tmp->map_size, tmp->letter);
