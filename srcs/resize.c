@@ -4,29 +4,51 @@
 
 #include "../includes/fillit.h"
 
-void	resize(tetramino *fig, int new_size)
+static void	increase_size(tetramino *fig, int new_size)
 {
 	int			i;
 	int			delta;
 	__uint128_t	mask;
 
+	delta = ABS(fig->map_size - new_size);
+	mask = -1;
+	mask >>= fig->map_size;
+	i = 0;
+	while (i++ < 3)
+	{
+		fig->map = (fig->map & ~mask) | ((fig->map & mask) >> (delta));
+		mask >>= new_size;
+	}
+}
+
+	
+static void	reduce_size((tetramino *fig, int new_size)
+{
+	int			i;
+	int			delta;
+	__uint128_t	mask;
+
+	delta = ABS(fig->map_size - new_size);
+	mask = -1;
+	mask >>= fig->map_size * 3;
+	mask = ~mask;
+	i = 0;
+	while (i++ < 3)
+	{
+		fig->map = ((fig->map & ~mask) << delta) | (fig->map & (mask <<= delta));
+		mask <<= new_size;
+	}
+}
+	
+void	resize(tetramino *fig, int new_size)
+{
 	if (!fig)
 		return ;
 	fig->map = fig->map_begin;
-	delta = ABS(fig->map_size - new_size);
-	mask = -1;
-	i = 0;
-	mask >>= fig->map_size * (new_size < fig->map_size ? 3 : 1);
-	while (i++ < 3)
-	{
-		if (new_size < fig->map_size)
-			fig->map = ((fig->map & mask) << delta)
-					| (fig->map & ~((mask <<= delta)));
-		else
-			fig->map = (fig->map & ~mask)
-					| ((fig->map & mask) >> (delta));
-		mask = new_size < fig->map_size ? mask << new_size : mask >> new_size;
-	}
+	if (new_size > figure->map_size)
+		increase_size(figure, new_size);
+	else
+		reduce_size(figure, new_size);
 	fig->map_begin = fig->map;
 	fig->map_size = new_size;
 	resize(fig->next, new_size);
