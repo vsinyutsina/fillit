@@ -26,18 +26,30 @@ typedef struct			s_border
 {
 	__uint128_t			right;
 	__uint128_t			bottom;
-	__uint128_t			other_figures;
-	__uint128_t			last_figure[20];
+
 }						t_border;
+
+typedef struct			s_other_figures
+{
+	__uint128_t			all;
+	__uint128_t			last[20];
+}						t_other_figures;
 
 t_tetramino				*init_tetramino(int fd, char letter);
 int						get_map_size(t_tetramino *figure);
 void					resize(t_tetramino *figure, int new_size);
-t_border					get_map_border(int map_size);
+t_border				get_map_border(int map_size);
 void					get_type(t_tetramino *figure);
+void					free_figures(t_tetramino *figure);
+t_other_figures			get_other_figures(void);
+int						fill_figures(t_tetramino *figure, t_border map_border,
+						t_other_figures other_figures);
 
 int						shift(t_tetramino *figure, t_border map_border);
-int						next_position(t_tetramino *figure, t_border map_border);
+int						next_position(t_tetramino *figure, t_border map_border,
+						t_other_figures other_figures);
+t_other_figures			new_other_figures(t_other_figures other_figures,
+						t_tetramino *figure);
 
 void					print_fig(__uint128_t map, int map_size, char letter);
 void					print_fig_param(t_tetramino *figure);

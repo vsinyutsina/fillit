@@ -22,6 +22,7 @@ static void		reduce_size(t_tetramino *fig, int new_size)
 	int			i;
 	int			delta;
 	__uint128_t	mask;
+	__uint128_t	mask2;
 
 	delta = ABS(fig->map_size - new_size);
 	mask = -1;
@@ -30,9 +31,11 @@ static void		reduce_size(t_tetramino *fig, int new_size)
 	i = 0;
 	while (i++ < 3)
 	{
+		mask2 <<= delta;
 		fig->map = ((fig->map & ~mask) << delta)
-				| (fig->map & (mask <<= delta));
+				| (fig->map & (mask2));
 		mask <<= new_size;
+		mask2 = mask;
 	}
 }
 
@@ -87,9 +90,5 @@ t_border			get_map_border(int map_size)
 	map_border.right <<= 128 - map_size * map_size;
 	map_border.bottom = -1;
 	map_border.bottom >>= map_size * map_size;
-	map_border.other_figures = 0;
-	i = 0;
-	while (i <= 20)
-		map_border.last_figure[i++] = 0;
 	return (map_border);
 }

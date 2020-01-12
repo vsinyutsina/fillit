@@ -4,10 +4,12 @@ CC = gcc
 CC_FLAGS = -Wall -Wextra -Werror
 
 # sources files
-SRC_NAME = main.c	\
-	validation.c	\
-	print.c			\
-	board_and_size.c
+SRC_NAME = map_size.c	\
+	main.c				\
+	print.c				\
+	initialization.c	\
+	solve.c 			\
+	support.c
 SRC_PATH = ./srcs/
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 

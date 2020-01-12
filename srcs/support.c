@@ -3,7 +3,7 @@
 void				get_type(t_tetramino *figure)
 {
 	t_tetramino		*tmp;
-	size_t			max;
+	int				max;
 
 	if (figure)
 	{
@@ -20,4 +20,32 @@ void				get_type(t_tetramino *figure)
 		if (!figure->type)
 			figure->type = max + 1;
 	}
+}
+
+void				free_figures(t_tetramino *figure)
+{
+	if (!figure)
+		return ;
+	free_figures(figure->next);
+	free(figure);
+	figure = NULL;
+}
+
+t_other_figures		new_other_figures(t_other_figures other_figures,
+					t_tetramino *figure)
+{
+	other_figures.all |= figure->map;
+	return (other_figures);
+}
+
+t_other_figures		get_other_figures(void)
+{
+	t_other_figures	new;
+	int				i;
+
+	new.all = 0;
+	i = 0;
+	while (i < 20)
+		new.last[i++] = 0;
+	return (new);
 }
