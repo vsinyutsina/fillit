@@ -1,10 +1,6 @@
-//
-// Created by Fredia Wiley on 11/01/2020.
-//
-
 #include "../includes/fillit.h"
 
-static void	increase_size(tetramino *fig, int new_size)
+static void		increase_size(t_tetramino *fig, int new_size)
 {
 	int			i;
 	int			delta;
@@ -21,8 +17,7 @@ static void	increase_size(tetramino *fig, int new_size)
 	}
 }
 
-	
-static void	reduce_size((tetramino *fig, int new_size)
+static void		reduce_size(t_tetramino *fig, int new_size)
 {
 	int			i;
 	int			delta;
@@ -35,28 +30,29 @@ static void	reduce_size((tetramino *fig, int new_size)
 	i = 0;
 	while (i++ < 3)
 	{
-		fig->map = ((fig->map & ~mask) << delta) | (fig->map & (mask <<= delta));
+		fig->map = ((fig->map & ~mask) << delta)
+				| (fig->map & (mask <<= delta));
 		mask <<= new_size;
 	}
 }
-	
-void	resize(tetramino *fig, int new_size)
+
+void			resize(t_tetramino *fig, int new_size)
 {
-	if (!fig)
+	if (fig == NULL)
 		return ;
 	fig->map = fig->map_begin;
-	if (new_size > figure->map_size)
-		increase_size(figure, new_size);
+	if (new_size > fig->map_size)
+		increase_size(fig, new_size);
 	else
-		reduce_size(figure, new_size);
+		reduce_size(fig, new_size);
 	fig->map_begin = fig->map;
 	fig->map_size = new_size;
 	resize(fig->next, new_size);
 }
 
-int		get_map_size(tetramino *figure)
+int				get_map_size(t_tetramino *figure)
 {
-	tetramino	*tmp;
+	t_tetramino	*tmp;
 	int			counter_figures;
 	int			map_size;
 	int			area;
@@ -77,4 +73,23 @@ int		get_map_size(tetramino *figure)
 	while (map_size * map_size < area)
 		map_size++;
 	return (map_size);
+}
+
+t_border			get_map_border(int map_size)
+{
+	t_border	map_border;
+	int		i;
+
+	map_border.right = 1;
+	i = 0;
+	while (i++ < map_size)
+		map_border.right = (map_border.right << map_size) + 1;
+	map_border.right <<= 128 - map_size * map_size;
+	map_border.bottom = -1;
+	map_border.bottom >>= map_size * map_size;
+	map_border.other_figures = 0;
+	i = 0;
+	while (i <= 20)
+		map_border.last_figure[i++] = 0;
+	return (map_border);
 }

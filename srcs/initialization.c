@@ -1,14 +1,16 @@
 #include "../includes/fillit.h"
 
-static void				get_default_value(tetramino *figure, char letter)
+static void				get_default_value(t_tetramino *figure, char letter)
 {
 	__uint128_t			right_board;
 
 	if (!figure)
 		return ;
+	figure->map_extended = 0;
 	figure->map_begin = figure->map;
 	figure->map_size = 4;
 	figure->letter = letter;
+	figure->type = 0;
 	figure->next = NULL;
 	figure->height = 0;
 	while ((figure->map << (figure->height * 4)) && figure->map)
@@ -36,11 +38,11 @@ static __uint128_t		move_to_top(__uint128_t map)
 	return (map);
 }
 
-static __uint128_t		validation(__uint128_t	map)
+static __uint128_t		validation(__uint128_t map)
 {
-	int			connect;
-	int			n_hash;
-	int			i;
+	int					connect;
+	int					n_hash;
+	int					i;
 
 	connect = 0;
 	n_hash = 0;
@@ -67,9 +69,9 @@ static __uint128_t		validation(__uint128_t	map)
 
 static __uint128_t		str_to_nbr(int fd)
 {
-	__uint128_t	map;
-	char		byte;
-	int			i;
+	__uint128_t			map;
+	char				byte;
+	int					i;
 
 	map = 0;
 	i = 0;
@@ -91,12 +93,12 @@ static __uint128_t		str_to_nbr(int fd)
 	return (validation(map));
 }
 
-tetramino		*get_tetramino(int fd, char letter)
+t_tetramino				*init_tetramino(int fd, char letter)
 {
-	tetramino	*figure;
-	char		tab;
+	t_tetramino			*figure;
+	char				tab;
 
-	if (!(figure = (tetramino*)malloc(sizeof(tetramino)))
+	if (!(figure = (t_tetramino*)malloc(sizeof(t_tetramino)))
 		|| letter > 'Z')
 		return (NULL);
 	if (!(figure->map = str_to_nbr(fd)))
@@ -107,7 +109,7 @@ tetramino		*get_tetramino(int fd, char letter)
 	}
 	get_default_value(figure, letter);
 	if (read(fd, &tab, 1))
-		if (tab != '\n' || !(figure->next = get_tetramino(fd, letter + 1)))
+		if (tab != '\n' || !(figure->next = init_tetramino(fd, letter + 1)))
 		{
 			free(figure);
 			figure = NULL;

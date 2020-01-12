@@ -1,8 +1,22 @@
-//
-// Created by Fredia Wiley on 11/01/2020.
-//
-
 #include "../includes/fillit.h"
+
+void	print_all(t_tetramino *figure, int params)
+{
+	if (!figure)
+		return ;
+	print(figure, params);
+	print_all(figure->next, params);
+}
+
+void	print(t_tetramino *figure, int params)
+{
+	if (!figure)
+		return ;
+	print_fig(figure->map, figure->map_size, figure->letter);
+	if (params)
+		print_fig_param(figure);
+	write(1, "\n", 1);
+}
 
 void	print_fig(__uint128_t map, int map_size, char letter)
 {
@@ -26,23 +40,18 @@ void	print_fig(__uint128_t map, int map_size, char letter)
 		write(1, "\n", 1);
 		i++;
 	}
-//	ft_putstr("map size = ");
-//	ft_putnbr(figure->map_size);
-//	ft_putstr("\nheight   = ");
-//	ft_putnbr(figure->height);
-//	ft_putstr("\nwidth    = ");
-//	ft_putnbr(figure->width);
-	write(1, "\n", 1);
 }
 
-void	print_fig_param(tetramino *figure)
+void	print_fig_param(t_tetramino *figure)
 {
-	ft_putstr("map size = ");
-	ft_putnbr(figure->map_size);
-	ft_putstr("\nheight   = ");
-	ft_putnbr(figure->height);
-	ft_putstr("\nwidth    = ");
+	ft_putstr("size [w * h] = [");
 	ft_putnbr(figure->width);
+	ft_putstr(" * ");
+	ft_putnbr(figure->height);
+	ft_putstr("]\nmap size     = ");
+	ft_putnbr(figure->map_size);
+	ft_putstr("\ntype         = ");
+	ft_putnbr(figure->type);
 	write(1, "\n\n", 2);
 }
 

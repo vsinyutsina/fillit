@@ -9,44 +9,29 @@ static int		print_error(int p)
 	return (0);
 }
 
-int		solve(int fd)
+int				solve(int fd)
 {
-	tetramino *fig;
-	tetramino *tmp;
+	t_tetramino	*fig;
+	int			map_size;
+	t_border		map_border;
 
-	if ((fig = get_tetramino(fd, 'A')))
+	if ((fig = init_tetramino(fd, 'A')))
 	{
-		tmp = fig;
-		ft_putnbr(get_map_size(tmp));
-		write(1, "\n\n\n", 3);
-		while (tmp)
-		{
-			print_fig(tmp->map, tmp->map_size, tmp->letter);
-			print_fig_param(tmp);
-			tmp = tmp->next;
-		}
-		tmp = fig;
-		resize(tmp, 6);
-		while (tmp)
-		{
-			print_fig(tmp->map, tmp->map_size, tmp->letter);
-			print_fig_param(tmp);
-			tmp = tmp->next;
-		}
-		tmp = fig;
-		resize(tmp, 3);
-		while (tmp)
-		{
-			print_fig(tmp->map, tmp->map_size, tmp->letter);
-			print_fig_param(tmp);
-			tmp = tmp->next;
-		}
+		map_size = get_map_size(fig);
+		resize(fig, map_size);
+		map_border = get_map_border(map_size);
+		get_type(fig);
+		print_all(fig, 1);
+		map_border.other_figures |= fig->map >> 5;
+		map_border.last_figure[8] = fig->next->map >> 6;
+		next_position(fig->next, map_border);
+		print(fig->next, 1);
 		return (1);
 	}
 	return (0);
 }
 
-int		main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	int		fd;
 
