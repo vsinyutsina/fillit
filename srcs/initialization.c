@@ -93,20 +93,15 @@ static __uint128_t		str_to_nbr(int fd)
 	return (validation(map));
 }
 
-t_tetramino				*init_tetramino(int fd, char letter)
+int						init_tetramino(int fd, t_tetramino figure)
 {
-	t_tetramino			*figure;
+	;
 	char				tab;
+	size_t				i;
 
-	if (!(figure = (t_tetramino*)malloc(sizeof(t_tetramino)))
-		|| letter > 'Z')
-		return (NULL);
-	if (!(figure->map = str_to_nbr(fd)))
-	{
-		free(figure);
-		figure = NULL;
-		return (NULL);
-	}
+	i = 0;
+	if (!(figure.map[i] = str_to_nbr(fd)))
+		return (0);
 	get_default_value(figure, letter);
 	if (read(fd, &tab, 1))
 		if (tab != '\n' || !(figure->next = init_tetramino(fd, letter + 1)))
@@ -114,5 +109,5 @@ t_tetramino				*init_tetramino(int fd, char letter)
 			free(figure);
 			figure = NULL;
 		}
-	return (figure);
+	return ((int)figure.map[i]);
 }
