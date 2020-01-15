@@ -46,7 +46,7 @@ void			resize(t_tetramino *fig, int new_size)
 	fig->map = fig->map_begin;
 	if (new_size > fig->map_size)
 		increase_size(fig, new_size);
-	else
+	else if (new_size < fig->map_size)
 		reduce_size(fig, new_size);
 	fig->map_begin = fig->map;
 	fig->map_size = new_size;

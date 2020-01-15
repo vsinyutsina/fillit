@@ -1,6 +1,7 @@
 #include "../includes/fillit.h"
 
-int		next_position(t_tetramino *figure, t_border map_border, t_other_figures other_figures)
+int		next_position(t_tetramino *figure, t_border map_border,
+		t_other_figures other_figures)
 {
 	if (figure->map == figure->map_begin
 	&& other_figures.last[figure->type])

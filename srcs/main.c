@@ -9,7 +9,7 @@ static int		print_error(int p)
 	return (0);
 }
 
-void				solve(t_tetramino *fig)
+void			solve(t_tetramino *fig)
 {
 	int				map_size;
 	t_border		map_border;
@@ -26,7 +26,7 @@ void				solve(t_tetramino *fig)
 		map_border = get_map_border(map_size);
 		resize(fig, map_size);
 	}
-	print_all(fig, 1);
+	print_map(fig);
 	free_figures(fig);
 }
 

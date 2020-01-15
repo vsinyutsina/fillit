@@ -4,8 +4,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-# include <stdio.h> // DELETE
-
 # define ABS(x) ((x) < 0 ? -(x) : (x))
 # define MAX(a, b) (a > b ? a : b)
 
@@ -56,5 +54,6 @@ void					print_fig_param(t_tetramino *figure);
 void					print_uint(__uint128_t line, int size, char l);
 void					print(t_tetramino *figure, int params);
 void					print_all(t_tetramino *figure, int params);
+void					print_map(t_tetramino *figure);
 
 #endif

@@ -52,29 +52,28 @@ t_other_figures		get_other_figures(void)
 
 void	print_map(t_tetramino *figure)
 {
-	char	array[figure->map_size * (figure->map_size + 1)];
-	int		i;
+	char		array[figure->map_size * (figure->map_size + 1)];
+	t_tetramino	*tmp;
+	int			i;
 
-	i = 0;
+	i =  -1;
+	tmp = figure;
 	while (i++ < figure->map_size * (figure->map_size + 1))
-	{
-		if (!(i % (figure->map_size + 1)))
-			array[i] = '\n';
-		array[i] = '.';
-	}
-	while (figure)
+		array[i] = (i + 1) % (figure->map_size + 1) ? '.' : '\n';
+	while (tmp)
 	{
 		i = 0;
-		while (i++ < (figure->map_size * figure->map_size))
+		while (i < (tmp->map_size * (tmp->map_size + 1)))
 		{
-			if (!(i % (figure->map_size + 1)))
+			if ((i + 1) % (tmp->map_size + 1))
 			{
-				if (figure->map == 1)
-					array[i] = figure->letter;
-				figure->map <<= 1;
+				if (tmp->map >> 127)
+					array[i] = tmp->letter;
+				tmp->map <<= 1;
 			}
+			i++;
 		}
-		figure = figure->next;
+		tmp = tmp->next;
 	}
 	write(1, array, figure->map_size * (figure->map_size + 1));
 }
