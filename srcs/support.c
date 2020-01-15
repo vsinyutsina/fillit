@@ -49,3 +49,32 @@ t_other_figures		get_other_figures(void)
 		new.last[i++] = 0;
 	return (new);
 }
+
+void	print_map(t_tetramino *figure)
+{
+	char	array[figure->map_size * (figure->map_size + 1)];
+	int		i;
+
+	i = 0;
+	while (i++ < figure->map_size * (figure->map_size + 1))
+	{
+		if (!(i % (figure->map_size + 1)))
+			array[i] = '\n';
+		array[i] = '.';
+	}
+	while (figure)
+	{
+		i = 0;
+		while (i++ < (figure->map_size * figure->map_size))
+		{
+			if (!(i % (figure->map_size + 1)))
+			{
+				if (figure->map == 1)
+					array[i] = figure->letter;
+				figure->map <<= 1;
+			}
+		}
+		figure = figure->next;
+	}
+	write(1, array, figure->map_size * (figure->map_size + 1));
+}
