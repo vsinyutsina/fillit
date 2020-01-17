@@ -35,6 +35,7 @@ t_other_figures		new_other_figures(t_other_figures other_figures,
 					t_tetramino *figure)
 {
 	other_figures.all |= figure->map;
+	other_figures.all_extended |= figure->map_extended;
 	return (other_figures);
 }
 

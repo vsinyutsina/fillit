@@ -1,4 +1,5 @@
 #include "../includes/fillit.h"
+#include <stdio.h>
 
 void	print_all(t_tetramino *figure, int params)
 {

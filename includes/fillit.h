@@ -24,13 +24,14 @@ typedef struct			s_border
 {
 	__uint128_t			right;
 	__uint128_t			bottom;
-
 }						t_border;
 
 typedef struct			s_other_figures
 {
 	__uint128_t			all;
+	__uint128_t			all_extended;
 	__uint128_t			last[20];
+	__uint128_t			last_extended[20];
 }						t_other_figures;
 
 t_tetramino				*init_tetramino(int fd, char letter);
