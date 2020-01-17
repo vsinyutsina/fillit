@@ -1,12 +1,11 @@
 NAME = fillit
 
 CC = gcc
-#CC_FLAGS = -Wall -Wextra -Werror
+CC_FLAGS = -Wall -Wextra -Werror
 
 # sources files
 SRC_NAME = map_size.c	\
 	main.c				\
-	print.c				\
 	initialization.c	\
 	solve.c 			\
 	support.c			\
