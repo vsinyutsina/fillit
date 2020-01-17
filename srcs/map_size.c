@@ -90,15 +90,5 @@ t_border			get_map_border(int map_size)
 	map_border.right <<= 128 - map_size * map_size;
 	map_border.bottom = -1;
 	map_border.bottom >>= map_size * map_size;
-	if (!map_border.bottom) // if we've reached the bottom of the first map;
-	{
-		map_border.bottom = -1;
-		map_border.bottom >>= (map_size * (map_size - (128 / (map_size)))) - (128 % map_size);
-	}
 	return (map_border);
 }
-
-/*	map_border.bottom = -1;
-	map_border.bottom >>= map_size < 12 ? map_size * map_size : 
-	map_size * (map_size - (128 / (map_size)));
-*/

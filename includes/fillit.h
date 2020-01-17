@@ -23,6 +23,7 @@ typedef struct			s_tetramino
 typedef struct			s_border
 {
 	__uint128_t			right;
+	__uint128_t			right_ext;
 	__uint128_t			bottom;
 }						t_border;
 
@@ -49,12 +50,20 @@ int						next_position(t_tetramino *figure, t_border map_border,
 						t_other_figures other_figures);
 t_other_figures			new_other_figures(t_other_figures other_figures,
 						t_tetramino *figure);
+void					reset(t_tetramino *figure);
 
 void					print_fig(__uint128_t map, int map_size, char letter);
 void					print_fig_param(t_tetramino *figure);
 void					print_uint(__uint128_t line, int size, char l);
 void					print(t_tetramino *figure, int params);
 void					print_all(t_tetramino *figure, int params);
+
 void					print_map(t_tetramino *figure);
+t_border				get_map_border_ext(int map_size);
+int						shift_extended(t_tetramino *figure, t_border map_border);
+int						next_position_extended(t_tetramino *figure, t_border map_border,
+						t_other_figures other_figures);
+int						fill_figures_ext(t_tetramino *figure, t_border map_border,
+						t_other_figures other_figures);
 
 #endif

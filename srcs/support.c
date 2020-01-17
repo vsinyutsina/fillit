@@ -47,7 +47,10 @@ t_other_figures		get_other_figures(void)
 	new.all = 0;
 	i = 0;
 	while (i < 20)
-		new.last[i++] = 0;
+	{
+		new.last[i] = 0;
+		new.last_extended[i++] = 0;
+	}
 	return (new);
 }
 
@@ -70,7 +73,8 @@ void	print_map(t_tetramino *figure)
 			{
 				if (tmp->map >> 127)
 					array[i] = tmp->letter;
-				tmp->map <<= 1;
+				tmp->map = (tmp->map << 1) | (tmp->map_extended >> 127);
+				tmp->map_extended <<= 1;
 			}
 			i++;
 		}

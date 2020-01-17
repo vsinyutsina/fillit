@@ -3,18 +3,12 @@
 int		next_position(t_tetramino *figure, t_border map_border,
 		t_other_figures other_figures)
 {
-	if (figure->map_size < 12)
-	{
-		if (figure->map == figure->map_begin
-		&& other_figures.last[figure->type])
-			figure->map = other_figures.last[figure->type];
-		while (figure->map & other_figures.all)
-			if (!shift(figure, map_border))
-				return (0);
-	}
-	else if (figure->map_size >= 12) // if map_size >= 12 
-		if (!(next_position_extended(figure, map_border, other_figures))) // go into another function
-			return (0); // return 0 if func was finished successfully
+	if (figure->map == figure->map_begin
+	&& other_figures.last[figure->type])
+		figure->map = other_figures.last[figure->type];
+	while (figure->map & other_figures.all)
+		if (!shift(figure, map_border))
+			return (0);
 	return (1);
 }
 
@@ -32,6 +26,7 @@ void	reset(t_tetramino *figure)
 	if (!figure)
 		return ;
 	figure->map = figure->map_begin;
+	figure->map_extended = 0;
 	reset(figure->next);
 }
 

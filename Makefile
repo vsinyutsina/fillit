@@ -1,7 +1,7 @@
 NAME = fillit
 
 CC = gcc
-CC_FLAGS = -Wall -Wextra -Werror
+#CC_FLAGS = -Wall -Wextra -Werror
 
 # sources files
 SRC_NAME = map_size.c	\
@@ -9,7 +9,9 @@ SRC_NAME = map_size.c	\
 	print.c				\
 	initialization.c	\
 	solve.c 			\
-	support.c
+	support.c			\
+	map_size_extended.c	\
+	solve_extended.c
 SRC_PATH = ./srcs/
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 
