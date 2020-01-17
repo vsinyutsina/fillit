@@ -9,19 +9,19 @@ static int		print_error(int p)
 	return (0);
 }
 
-static void			solve(t_tetramino *figure, t_border *map_border,
-					t_other_figures *other_fig)
+static void		solve(t_tetramino *figure, t_border *map_border,
+				t_other_figures *other_fig)
 {
-	int			(*fill) (t_tetramino *fig, t_border map_bor, t_other_figures other);
-	t_border	(*border) (int map_size);
 	int			map_size;
+	t_border	(*border) (int map_size);
+	int			(*fill) (t_tetramino *fig, t_border bor, t_other_figures other);
 
 	map_size = figure->map_size;
 	fill = map_size < 12 ? fill_figures : fill_figures_ext;
 	if (fill(figure, *map_border, *other_fig))
 	{
 		resize(figure, map_size + 1);
-		border = figure->map_size < 12 ?  get_map_border : get_map_border_ext;
+		border = figure->map_size < 12 ? get_map_border : get_map_border_ext;
 		*map_border = border(figure->map_size);
 		solve(figure, map_border, other_fig);
 	}
@@ -50,9 +50,8 @@ int				main(int ac, char **av)
 {
 	int					fd;
 	t_tetramino			*figure;
-	t_border 			map_border;
-	t_other_figures 	other_fig;
-
+	t_border			map_border;
+	t_other_figures		other_fig;
 
 	if (ac == 2)
 	{

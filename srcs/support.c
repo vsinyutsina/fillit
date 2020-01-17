@@ -54,13 +54,13 @@ t_other_figures		get_other_figures(void)
 	return (new);
 }
 
-void	print_map(t_tetramino *figure)
+void				print_map(t_tetramino *figure)
 {
-	char		array[figure->map_size * (figure->map_size + 1)];
-	t_tetramino	*tmp;
-	int			i;
+	char			array[figure->map_size * (figure->map_size + 1)];
+	t_tetramino		*tmp;
+	int				i;
 
-	i =  -1;
+	i = -1;
 	tmp = figure;
 	while (i++ < figure->map_size * (figure->map_size + 1))
 		array[i] = (i + 1) % (figure->map_size + 1) ? '.' : '\n';

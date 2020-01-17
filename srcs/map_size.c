@@ -32,27 +32,6 @@ static void		reduce_size(t_tetramino *fig, int new_size)
 		mask >>= new_size;
 		fig->map = (fig->map & ~mask) | ((fig->map << delta) & mask);
 	}
-
-	/*
-	int			i;
-	int			delta;
-	__uint128_t	mask;
-	__uint128_t	mask2;
-
-	delta = ABS(fig->map_size - new_size);
-	mask = -1;
-	mask >>= fig->map_size * 3;
-	mask = ~mask;
-	i = 0;
-	while (i++ < 3)
-	{
-		mask2 <<= delta;
-		fig->map = ((fig->map & ~mask) << delta)
-				| (fig->map & (mask2));
-		mask <<= new_size;
-		mask2 = mask;
-	}
-	 */
 }
 
 void			resize(t_tetramino *fig, int new_size)
@@ -94,10 +73,10 @@ int				get_map_size(t_tetramino *figure)
 	return (map_size);
 }
 
-t_border			get_map_border(int map_size)
+t_border		get_map_border(int map_size)
 {
 	t_border	map_border;
-	int		i;
+	int			i;
 
 	map_border.right = 1;
 	i = 0;
